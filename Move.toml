@@ -1,0 +1,16 @@
+[package]
+name = 'ticket'
+version = '1.0.0'
+
+[addresses]
+ticket_addr = 'copy_your_address_here'
+
+[dependencies.AptosFramework]
+git = 'https://github.com/aptos-labs/aptos-core.git'
+rev = 'main'
+subdir = 'aptos-move/framework/aptos-framework'
+
+[dependencies.AptosTokenObjects]
+git = 'https://github.com/aptos-labs/aptos-core.git'
+rev = 'main'
+subdir = 'aptos-move/framework/aptos-token-objects'
