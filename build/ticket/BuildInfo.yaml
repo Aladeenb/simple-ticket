@@ -1,0 +1,31 @@
+---
+compiled_package_info:
+  package_name: ticket
+  address_alias_instantiation:
+    Extensions: "0000000000000000000000000000000000000000000000000000000000000001"
+    aptos_framework: "0000000000000000000000000000000000000000000000000000000000000001"
+    aptos_std: "0000000000000000000000000000000000000000000000000000000000000001"
+    aptos_token: "0000000000000000000000000000000000000000000000000000000000000003"
+    aptos_token_objects: "0000000000000000000000000000000000000000000000000000000000000004"
+    core_resources: 000000000000000000000000000000000000000000000000000000000a550c18
+    std: "0000000000000000000000000000000000000000000000000000000000000001"
+    ticket_addr: c4a4270c78fa3e6c04dd056218cd60ca785c28e63a46800a489658ed4cf08950
+    vm_reserved: "0000000000000000000000000000000000000000000000000000000000000000"
+  source_digest: 21E940A3A7EFB61A0888B8D18F493799DFAB2460F45F1C72FE3199F960A05C11
+  build_flags:
+    dev_mode: true
+    test_mode: true
+    generate_docs: false
+    generate_abis: false
+    install_dir: ~
+    force_recompilation: false
+    additional_named_addresses: {}
+    architecture: ~
+    fetch_deps_only: false
+    skip_fetch_latest_git_deps: false
+    bytecode_version: ~
+dependencies:
+  - AptosFramework
+  - AptosStdlib
+  - AptosTokenObjects
+  - MoveStdlib
