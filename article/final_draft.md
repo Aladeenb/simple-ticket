@@ -107,6 +107,7 @@ These properties define the object model:
 
 ## Implementation example
 
+https://github.com/Aladeenb/simple-ticket
 
 ## Object model implementations within Aptos Framework:
 - Aptos Token v2: an object-based token model
