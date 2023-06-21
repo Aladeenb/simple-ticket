@@ -1,3 +1,9 @@
+/*
+    This module represents a simple implementation of the object model.
+    A ticket represents an object, it consists of 2 variables, price and seat.
+    A seat represents another object, it has 2 variables as well, category and price_modifier,
+    and it can be upgraded.  
+*/
 module ticket_addr::ticket {
     use aptos_framework::object::{Self, ConstructorRef, Object};
     use aptos_token_objects::collection;
@@ -10,24 +16,27 @@ module ticket_addr::ticket {
     struct Ticket has key {
         price: u64,
         seat: Option<Object<Seat>>,
+        // mutator reference to be able to manipulate the ticket object.
         mutator_ref: token::MutatorRef,
     }
 
     #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
     struct Seat has key{
         category: String,
+        // A price modifier that is, when a ticket get the upgrade,  
+        // the new ticket price will be changed.
         price_modifier: u64,
     }
 
-    // for storing the created collection in a resource account. 
-    // This step is important to be able to modify the collection, including creating or destroying tickets
+    // Store the created collection in a resource account. 
+    // This step is important to be able to modify the collection, including creating or destroying tickets.
     struct OnChainConfig has key {
         collection_name: String,
     }
 
     // For minting the base ticket, no seat assigned, we start by creating the collection.
     // In this example, a collection is an object containing the ticket object as well as the seat object.
-    // Check collection.move for more information
+    // Check collection.move for more information.
     fun init_module(account: &signer) {
         let new_collection_name = string::utf8(b"ticket");
         collection::create_fixed_collection(
@@ -39,13 +48,15 @@ module ticket_addr::ticket {
             string::utf8(b"collection uri: www.aladeen.me"),
         );
 
+        // Move the created object to the resource account.
         let new_collection = OnChainConfig {
             collection_name: new_collection_name,
         };
         move_to(account, new_collection);
     }
 
-    // Create token object of the ticket
+    // Create an object, this function is reusable and will be used
+    // for both ticket and seat objects
     fun create_object(
         creator: &signer,
         description: String,
@@ -65,10 +76,10 @@ module ticket_addr::ticket {
 
     // Create ticket
     public fun create_ticket(
-        // ticket variables
+        // ticket variables that we will submit on-chain
         price: u64,
 
-        // object variables
+        // object variables that we will submit on-chain
         creator: &signer,
         description: String,
         name: String,
@@ -87,7 +98,8 @@ module ticket_addr::ticket {
         object::address_to_object(signer::address_of(&object_signer))
     }
 
-    // Entry function for minting the ticket object, using encapsulation technique
+    // Entry function for minting the ticket object
+    // using encapsulation technique 
     entry fun mint_ticket(
         account: &signer,
         description: String,
@@ -100,11 +112,11 @@ module ticket_addr::ticket {
 
     // Create token object of the seat
     public fun create_seat(
-        // seat variables
+        // seat variables that we will submit on-chain
         category: String,
         price_modifier: u64,
 
-        // object variables
+        // object variables that we will submit on-chain
         creator: &signer,
         description: String,
         name: String,
@@ -119,6 +131,7 @@ module ticket_addr::ticket {
         };
         move_to(&object_signer, new_seat);
 
+        // get the object from the object signer  
         object::address_to_object(signer::address_of(&object_signer))
     }
 
@@ -141,6 +154,8 @@ module ticket_addr::ticket {
         seat: Object<Seat>,
     ) acquires Ticket {
         let ticket_object = borrow_global_mut<Ticket>(object::object_address(&ticket));
+        
+        // Add the seat to the ticket object
         option::fill(&mut ticket_object.seat, seat);
         object::transfer_to_object(owner, seat, ticket);
     }
